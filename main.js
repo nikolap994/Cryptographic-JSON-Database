@@ -14,36 +14,49 @@ class SecureJson {
   /**
    * Reads content of the json file.
    */
-  read() {
-    fs.readFile(this.name, this.encoding, (err, jsonString) => {
+  async read() {
+    try {
+      const response = fs.readFileSync(this.name, { encoding: this.encoding });
+      const jsonData = JSON.parse(response);
+      return jsonData;
+    } catch (err) {
+      this.printMsg(err);
+      return;
+    }
+  }
+
+  /**
+   * Writes content of the jsonString to the file (override entire file content).
+   * @param {string} jsonString
+   */
+  async write(jsonString) {
+    return fs.writeFileSync(this.name, jsonString, (err) => {
       if (err) {
-        this.printMsg(err);
+        this.printMsg("Error writing file", err);
         return;
       } else {
-        try {
-          const jsonData = JSON.parse(jsonString);
-          this.printMsg(jsonData);
-        } catch (err) {
-          this.printMsg(err);
-          return;
-        }
+        this.printMsg("Successfully wrote to file");
       }
     });
   }
 
   /**
-   * Writes content of the jsonString to the file (override entire file content).
-   * @param {string} jsonString 
+   * Append JSON object to existing json file content.
+   * @param {object} data
+   * @returns
    */
-  write(jsonString) {
-    fs.writeFile(this.name, jsonString, (err) => {
-      if (err) {
-        this.printMsg("Error writing file", err);
-        return;
-      } else {
-        this.printMsg("Successfully wrote file");
-      }
-    });
+  async append(data) {
+    let databaseContent = [];
+    const datas = await this.read();
+    databaseContent.push(datas);
+    databaseContent.push(data);
+
+    try {
+      this.write(JSON.stringify(databaseContent));
+    } catch (err) {
+      this.printMsg(err);
+      return;
+    }
   }
 
   /**
