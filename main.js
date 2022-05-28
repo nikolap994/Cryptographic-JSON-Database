@@ -71,36 +71,24 @@ class SecureJson {
   async update(search, updates) {
     try {
       const datas = await this.read();
-      const sectorParam = search[0];
-      const sectorValue = search[1];
+      this.find(search).then((searchResult) => {
+        if (searchResult.length === 0) {
+          this.printMsg("No entries found");
+        } else if (searchResult.length === 1) {
+          let key = searchResult[0][0];
 
-      let searchResult = [];
+          updates.forEach((update) => {
+            let updateKey = update[0];
+            let updateValue = update[1];
 
-      const asArray = Object.entries(datas);
-      asArray.filter(([key, value]) => {
-        if (typeof value[sectorParam] !== "undefined") {
-          if (value[sectorParam] === sectorValue) {
-            searchResult.push([key, value]);
-          }
+            datas[key][updateKey] = updateValue;
+          });
+
+          this.write(JSON.stringify(datas));
+        } else {
+          this.printMsg("Multiple entries found");
         }
       });
-
-      if (searchResult.length === 0) {
-        this.printMsg("No entries found");
-      } else if (searchResult.length === 1) {
-        let key = searchResult[0][0];
-
-        updates.forEach((update) => {
-          let updateKey = update[0];
-          let updateValue = update[1];
-
-          datas[key][updateKey] = updateValue;
-        });
-
-        this.write(JSON.stringify(datas));
-      } else {
-        this.printMsg("Multiple entries found");
-      }
     } catch (err) {
       this.printMsg(err);
       return;
@@ -109,8 +97,8 @@ class SecureJson {
 
   /**
    * Find in database based on query.
-   * @param {array} search 
-   * @returns 
+   * @param {array} search
+   * @returns
    */
   async find(search) {
     try {

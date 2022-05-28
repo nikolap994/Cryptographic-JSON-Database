@@ -1,13 +1,13 @@
 const SecureJson = require("./main");
 const DB = new SecureJson();
 
-// DB.read().then((data) => console.log(data));
+DB.read().then((data) => console.log(data));
 
-DB.find(['title', 'delectus aut autem']).then((data) => console.log(data));
+// DB.find(['title', 'delectus aut autem']).then((data) => console.log(data));
 
 // DB.update(
-//     ['userId', 1212213],
-//     [['completed', true], ['title', 'delectus']]
+//     ['userId', 1241251],
+//     [['completed', false], ['title', 'delectus']]
 // );
 
 // DB.append({
