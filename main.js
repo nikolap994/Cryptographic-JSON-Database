@@ -32,6 +32,21 @@ class SecureJson {
   }
 
   /**
+   * Writes content of the jsonString to the file (override entire file content).
+   * @param {string} jsonString 
+   */
+  write(jsonString) {
+    fs.writeFile(this.name, jsonString, (err) => {
+      if (err) {
+        this.printMsg("Error writing file", err);
+        return;
+      } else {
+        this.printMsg("Successfully wrote file");
+      }
+    });
+  }
+
+  /**
    * Prints message.
    * @param {string} msg
    */
