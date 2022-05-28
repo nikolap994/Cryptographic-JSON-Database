@@ -1,4 +1,4 @@
-const SecureJson = require("./main");
+const SecureJson = require("./helper/json");
 const DB = new SecureJson();
 
 DB.read().then((data) => console.log(data));
