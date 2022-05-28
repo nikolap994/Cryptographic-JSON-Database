@@ -48,11 +48,59 @@ class SecureJson {
   async append(data) {
     let databaseContent = [];
     const datas = await this.read();
-    databaseContent.push(datas);
     databaseContent.push(data);
+
+    datas.forEach((entry) => {
+      databaseContent.push(entry);
+    });
 
     try {
       this.write(JSON.stringify(databaseContent));
+    } catch (err) {
+      this.printMsg(err);
+      return;
+    }
+  }
+
+  /**
+   * Find and update entry from the JSON file.
+   * @param {array} search 
+   * @param {array} updates 
+   * @returns 
+   */
+  async update(search, updates) {
+    try {
+      const datas = await this.read();
+      const sectorParam = search[0];
+      const sectorValue = search[1];
+
+      let searchResult = [];
+
+      const asArray = Object.entries(datas);
+      asArray.filter(([key, value]) => {
+        if (typeof value[sectorParam] !== "undefined") {
+          if (value[sectorParam] === sectorValue) {
+            searchResult.push([key, value]);
+          }
+        }
+      });
+
+      if (searchResult.length === 0) {
+        this.printMsg("No entries found");
+      } else if (searchResult.length === 1) {
+        let key = searchResult[0][0];
+
+        updates.forEach((update) => {
+          let updateKey = update[0];
+          let updateValue = update[1];
+
+          datas[key][updateKey] = updateValue;
+        });
+
+        this.write(JSON.stringify(datas));
+      } else {
+        this.printMsg("Multiple entries found");
+      }
     } catch (err) {
       this.printMsg(err);
       return;
