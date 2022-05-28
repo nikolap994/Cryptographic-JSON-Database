@@ -64,9 +64,9 @@ class SecureJson {
 
   /**
    * Find and update entry from the JSON file.
-   * @param {array} search 
-   * @param {array} updates 
-   * @returns 
+   * @param {array} search
+   * @param {array} updates
+   * @returns
    */
   async update(search, updates) {
     try {
@@ -101,6 +101,35 @@ class SecureJson {
       } else {
         this.printMsg("Multiple entries found");
       }
+    } catch (err) {
+      this.printMsg(err);
+      return;
+    }
+  }
+
+  /**
+   * Find in database based on query.
+   * @param {array} search 
+   * @returns 
+   */
+  async find(search) {
+    try {
+      const datas = await this.read();
+      const sectorParam = search[0];
+      const sectorValue = search[1];
+
+      let searchResult = [];
+
+      const asArray = Object.entries(datas);
+      asArray.filter(([key, value]) => {
+        if (typeof value[sectorParam] !== "undefined") {
+          if (value[sectorParam] === sectorValue) {
+            searchResult.push([key, value]);
+          }
+        }
+      });
+
+      return searchResult;
     } catch (err) {
       this.printMsg(err);
       return;
