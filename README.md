@@ -1,6 +1,8 @@
-# JSON Database
+# Secure JSON Database
 
 Simple and powerfull tool that allows to use json file like a database. It provides collection of methods that you can use like a database query builder.
+
+![Logo](https://repository-images.githubusercontent.com/497405780/0aa0c8b3-bb2f-4d70-9bb2-4846d3829a53)
 
 ## How to use
 
