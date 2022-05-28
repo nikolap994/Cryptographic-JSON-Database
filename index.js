@@ -25,7 +25,3 @@ DB.read().then((data) => console.log(data));
 // 	"title": "delectus aut autem",
 // 	"completed": false
 // }));
-
-// DB.printMsg("This is demo msg");
-
-// console.log(DB.name);
