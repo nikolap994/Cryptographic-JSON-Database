@@ -96,7 +96,7 @@ class SecureJson {
   }
 
   /**
-   * Find in database based on query.
+   * Find in JSON based on query.
    * @param {array} search
    * @returns
    */
@@ -118,6 +118,33 @@ class SecureJson {
       });
 
       return searchResult;
+    } catch (err) {
+      this.printMsg(err);
+      return;
+    }
+  }
+
+  /**
+   * Remove entry from JSON by query.
+   * @param {array} search 
+   * @returns 
+   */
+  async remove(search) {
+    try {
+      let datas = await this.read();
+      this.find(search).then((searchResult) => {
+        if (searchResult.length === 0) {
+          this.printMsg("No entries found");
+        } else if (searchResult.length === 1) {
+          let key = searchResult[0][0];
+
+          delete datas[key];
+          datas = datas.filter(item => item);
+          this.write(JSON.stringify(datas));
+        } else {
+          this.printMsg("Multiple entries found");
+        }
+      });
     } catch (err) {
       this.printMsg(err);
       return;

@@ -3,6 +3,8 @@ const DB = new SecureJson();
 
 DB.read().then((data) => console.log(data));
 
+// DB.remove(['userId', 125125125]);
+
 // DB.find(['title', 'delectus aut autem']).then((data) => console.log(data));
 
 // DB.update(
