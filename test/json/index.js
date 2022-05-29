@@ -1,7 +1,7 @@
-const SecureJson = require("../helper/json");
+const SecureJson = require("../../helper/json");
 const DB = new SecureJson();
 
-DB.read().then((data) => console.log(data));
+// DB.read().then((data) => console.log(data));
 
 // DB.remove(['userId', 125125125]);
 
