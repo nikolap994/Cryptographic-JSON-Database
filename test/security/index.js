@@ -1,5 +1,5 @@
 const Status = require("../Status");
-const Monitor = new Status();
+const Monitor = new Status("AES.json");
 
 Monitor.scriptStart("AES_SETUP");
 
@@ -32,8 +32,6 @@ const AES_Decryption = AES_CLASS.decrypt(
   config.AES.ENC_KEY,
   config.AES.IV
 );
-
-console.log(">>> AES DECRYPTION: " + AES_Decryption);
 
 Monitor.scriptEnd("AES_SETUP");
 Monitor.memoryUsage();

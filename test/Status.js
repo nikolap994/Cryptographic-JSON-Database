@@ -1,7 +1,13 @@
+const fs = require("fs");
+const SecureJson = require("../helper/json");
+
 class Status {
-  constructor() {
+  constructor(name) {
     this.memoryStart = undefined;
     this.memoryEnd = undefined;
+    this.memoryStatus = {};
+    this.databaseName = name;
+    this.json = new SecureJson(name);
   }
 
   scriptStart(name) {
@@ -13,11 +19,8 @@ class Status {
     console.timeEnd(name);
     this.memoryEnd = process.memoryUsage();
 
-    console.log(
-      "memory consumed 2nd Call : " +
-        (this.memoryEnd.rss - this.memoryStart.rss) / 1024 +
-        " KB"
-    );
+    this.memoryStatus["consumedMemory2ndCall"] =
+      (this.memoryEnd.rss - this.memoryStart.rss) / 1024 / 1024 + " MB";
   }
 
   memoryUsage() {
@@ -25,22 +28,15 @@ class Status {
       `${Math.round((data / 1024 / 1024) * 100) / 100} MB`;
     const memoryData = process.memoryUsage();
 
-    const memoryUsage = {
-      rss: `${formatMemoryUsage(
-        memoryData.rss
-      )} -> Resident Set Size - total memory allocated for the process execution`,
-      heapTotal: `${formatMemoryUsage(
-        memoryData.heapTotal
-      )} -> total size of the allocated heap`,
-      heapUsed: `${formatMemoryUsage(
-        memoryData.heapUsed
-      )} -> actual memory used during the execution`,
-      external: `${formatMemoryUsage(
-        memoryData.external
-      )} -> V8 external memory`,
-    };
+    this.memoryStatus["rss"] = formatMemoryUsage(memoryData.rss);
+    this.memoryStatus["heapTotal"] = formatMemoryUsage(memoryData.heapTotal);
+    this.memoryStatus["external"] = formatMemoryUsage(memoryData.external);
 
-    console.log(memoryUsage);
+    if (fs.existsSync(this.databaseName)) {
+      this.json.append(this.memoryStatus);
+    } else {
+      this.json.write("[" + JSON.stringify(this.memoryStatus) + "]");
+    }
   }
 }
 
