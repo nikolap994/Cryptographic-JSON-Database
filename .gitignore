@@ -105,3 +105,4 @@ dist
 
 # Project specific
 *.json
+!config.json
