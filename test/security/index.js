@@ -1,4 +1,4 @@
-const Status = require("../Status");
+const Status = require("../status");
 const Monitor = new Status("AES.json");
 
 Monitor.scriptStart("AES_SETUP");
