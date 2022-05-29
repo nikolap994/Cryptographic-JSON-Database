@@ -1,9 +1,7 @@
-
 const Status = require("../Status");
 const Monitor = new Status();
 
 Monitor.scriptStart("AES_SETUP");
-
 
 const config = {
   AES: {
