@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev-json": "nodemon test/json/index.js",
-    "dev-security": "nodemon test/security/index.js"
+    "dev-security-aes": "nodemon test/security/aes.js",
+    "dev-security-des": "nodemon test/security/des.js",
+    "dev-security-triple-des": "nodemon test/security/triple-des.js"
   },
   "keywords": [],
   "author": "",
