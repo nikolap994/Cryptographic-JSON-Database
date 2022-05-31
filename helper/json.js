@@ -9,6 +9,20 @@ class SecureJson {
   constructor(name, encoding) {
     this.name = name ? name : "default.json";
     this.encoding = encoding ? encoding : "utf-8";
+
+    this.init(name);
+  }
+
+  /**
+   * Create file if does not exist.
+   * @param {string} name 
+   */
+  async init(name) {
+    if (!fs.existsSync(name)) {
+      fs.promises.writeFile(name, "[]", { encoding: "utf8" }).then(() => {
+        console.log("Done");
+      });
+    }
   }
 
   /**
@@ -17,8 +31,10 @@ class SecureJson {
   async read() {
     try {
       const response = fs.readFileSync(this.name, { encoding: this.encoding });
-      const jsonData = JSON.parse(response);
-      return jsonData;
+      if (response.length) {
+        const jsonData = JSON.parse(response);
+        return jsonData;
+      }
     } catch (err) {
       this.printMsg(err);
       return;
@@ -126,8 +142,8 @@ class SecureJson {
 
   /**
    * Remove entry from JSON by query.
-   * @param {array} search 
-   * @returns 
+   * @param {array} search
+   * @returns
    */
   async remove(search) {
     try {
@@ -139,7 +155,7 @@ class SecureJson {
           let key = searchResult[0][0];
 
           delete datas[key];
-          datas = datas.filter(item => item);
+          datas = datas.filter((item) => item);
           this.write(JSON.stringify(datas));
         } else {
           this.printMsg("Multiple entries found");
