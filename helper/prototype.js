@@ -1,11 +1,11 @@
 class Prototype {
-    /**
-     * 
-     * @param {string} data 
-     * @param {string} algorithm 
-     * @param {string} key 
-     * @param {string} iV 
-     */
+  /**
+   *
+   * @param {string} data
+   * @param {string} algorithm
+   * @param {string} key
+   * @param {string} iV
+   */
   constructor(algorithm, key, iV) {
     this.algorithm = algorithm ? algorithm : null;
     this.key = key;
@@ -13,25 +13,37 @@ class Prototype {
   }
 
   /**
-   * 
+   *
    * @returns string
    */
   encrypt(data) {
-    const cryptoStandard = require("./security/" + this.algorithm);
-    const decryption = cryptoStandard.decrypt(data, this.key, this.iV);
+    try {
+      const fileName = "./security/" + this.algorithm;
+      const cryptoStandard = require(fileName);
+      const crypto = new cryptoStandard();
+      const encryption = crypto.encrypt(data, this.key, this.iV);
 
-    return decryption;
+      return encryption;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   /**
-   * 
+   *
    * @returns string
    */
   decrypt(data) {
-    const cryptoStandard = require("./security/" + this.algorithm);
-    const encryption = cryptoStandard.encrypt(data, this.key, this.iV);
+    try {
+      const fileName = "./security/" + this.algorithm;
+      const cryptoStandard = require(fileName);
+      const crypto = new cryptoStandard();
+      const decryption = crypto.decrypt(data, this.key, this.iV);
 
-    return encryption;
+      return decryption;
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 

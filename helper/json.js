@@ -71,6 +71,7 @@ class SecureJson {
    */
   async append(data) {
     let databaseContent = [];
+    const Encryption = new Prototype(this.algorithm, this.key, this.iV);
     const datas = await this.read();
     databaseContent.push(data);
 
@@ -79,8 +80,7 @@ class SecureJson {
     });
 
     try {
-      const Encryption = new Prototype(this.algorithm, this.key, this.iV);
-      this.write(JSON.stringify(Encryption.encrypt(databaseContent)));
+      this.write(Encryption.encrypt(JSON.stringify(databaseContent)));
     } catch (err) {
       this.printMsg(err);
       return;
@@ -96,7 +96,7 @@ class SecureJson {
   async update(search, updates) {
     try {
       const Encryption = new Prototype(this.algorithm, this.key, this.iV);
-      const datas = Encryption.decrypt(await this.read());
+      const datas = await this.read();
       this.find(search).then((searchResult) => {
         if (searchResult.length === 0) {
           this.printMsg("No entries found");
@@ -129,7 +129,7 @@ class SecureJson {
   async find(search) {
     try {
       const Encryption = new Prototype(this.algorithm, this.key, this.iV);
-      const datas = Encryption.decrypt(await this.read());
+      const datas = await this.read();
       const sectorParam = search[0];
       const sectorValue = search[1];
 
@@ -159,7 +159,7 @@ class SecureJson {
   async remove(search) {
     try {
       const Encryption = new Prototype(this.algorithm, this.key, this.iV);
-      let datas = Encryption.decrypt(await this.read());
+      let datas = await this.read();
       this.find(search).then((searchResult) => {
         if (searchResult.length === 0) {
           this.printMsg("No entries found");
