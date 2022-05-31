@@ -1,4 +1,5 @@
 const fs = require("fs");
+const Prototype = require("./prototype");
 
 class SecureJson {
   /**
@@ -6,16 +7,19 @@ class SecureJson {
    * @param {string} name
    * @param {string} encoding
    */
-  constructor(name, encoding) {
+  constructor(name, encoding, algorithm, key, iV) {
     this.name = name ? name : "default.json";
     this.encoding = encoding ? encoding : "utf-8";
+    this.algorithm = algorithm ? algorithm : null;
+    this.key = key ? key : null;
+    this.iV = iV ? iV : null;
 
     this.init(name);
   }
 
   /**
    * Create file if does not exist.
-   * @param {string} name 
+   * @param {string} name
    */
   async init(name) {
     if (!fs.existsSync(name)) {
@@ -30,9 +34,10 @@ class SecureJson {
    */
   async read() {
     try {
+      const Encryption = new Prototype(this.algorithm, this.key, this.iV);
       const response = fs.readFileSync(this.name, { encoding: this.encoding });
       if (response.length) {
-        const jsonData = JSON.parse(response);
+        const jsonData = JSON.parse(Encryption.decrypt(response));
         return jsonData;
       }
     } catch (err) {
@@ -46,6 +51,9 @@ class SecureJson {
    * @param {string} jsonString
    */
   async write(jsonString) {
+    const Encryption = new Prototype(this.algorithm, this.key, this.iV);
+    jsonString = Encryption.encrypt(jsonString);
+
     return fs.writeFileSync(this.name, jsonString, (err) => {
       if (err) {
         this.printMsg("Error writing file", err);
@@ -71,7 +79,8 @@ class SecureJson {
     });
 
     try {
-      this.write(JSON.stringify(databaseContent));
+      const Encryption = new Prototype(this.algorithm, this.key, this.iV);
+      this.write(JSON.stringify(Encryption.encrypt(databaseContent)));
     } catch (err) {
       this.printMsg(err);
       return;
@@ -86,7 +95,8 @@ class SecureJson {
    */
   async update(search, updates) {
     try {
-      const datas = await this.read();
+      const Encryption = new Prototype(this.algorithm, this.key, this.iV);
+      const datas = Encryption.decrypt(await this.read());
       this.find(search).then((searchResult) => {
         if (searchResult.length === 0) {
           this.printMsg("No entries found");
@@ -100,7 +110,7 @@ class SecureJson {
             datas[key][updateKey] = updateValue;
           });
 
-          this.write(JSON.stringify(datas));
+          this.write(Encryption.encrypt(JSON.stringify(datas)));
         } else {
           this.printMsg("Multiple entries found");
         }
@@ -118,7 +128,8 @@ class SecureJson {
    */
   async find(search) {
     try {
-      const datas = await this.read();
+      const Encryption = new Prototype(this.algorithm, this.key, this.iV);
+      const datas = Encryption.decrypt(await this.read());
       const sectorParam = search[0];
       const sectorValue = search[1];
 
@@ -147,7 +158,8 @@ class SecureJson {
    */
   async remove(search) {
     try {
-      let datas = await this.read();
+      const Encryption = new Prototype(this.algorithm, this.key, this.iV);
+      let datas = Encryption.decrypt(await this.read());
       this.find(search).then((searchResult) => {
         if (searchResult.length === 0) {
           this.printMsg("No entries found");
@@ -156,7 +168,7 @@ class SecureJson {
 
           delete datas[key];
           datas = datas.filter((item) => item);
-          this.write(JSON.stringify(datas));
+          this.write(Encryption.encrypt(JSON.stringify(datas)));
         } else {
           this.printMsg("Multiple entries found");
         }
