@@ -1,23 +1,23 @@
 class Prototype {
-  constructor(databaseName, encoding, algorithm, key, iV) {
-    this.databaseName = databaseName ? databaseName : "default.json";
-    this.encoding = encoding ? encoding : "utf-8";
+  constructor(data, algorithm, key, iV) {
+    this.data = data ? data : "[]";
     this.algorithm = algorithm ? algorithm : null;
     this.key = key;
     this.iV = iV;
   }
 
-  read() {
-    const SecureJson = require("./json");
-    const DB = new SecureJson(this.databaseName, this.encoding);
+  encrypt() {
+    const cryptoStandard = require("./security/" + this.algorithm);
+    const decryption = cryptoStandard.decrypt(data, this.key, this.iV);
 
-    DB.read().then((data) => {
-      const cryptoStandard = require("./security/" + this.algorithm);
+    return decryption;
+  }
 
-      const decryption = cryptoStandard.decrypt(data, this.key, this.iV);
+  decrypt() {
+    const cryptoStandard = require("./security/" + this.algorithm);
+    const encryption = cryptoStandard.encrypt(data, this.key, this.iV);
 
-      console.log(decryption);
-    });
+    return encryption;
   }
 }
 
