@@ -6,8 +6,7 @@ class Prototype {
      * @param {string} key 
      * @param {string} iV 
      */
-  constructor(data, algorithm, key, iV) {
-    this.data = data ? data : "[]";
+  constructor(algorithm, key, iV) {
     this.algorithm = algorithm ? algorithm : null;
     this.key = key;
     this.iV = iV;
@@ -17,7 +16,7 @@ class Prototype {
    * 
    * @returns string
    */
-  encrypt() {
+  encrypt(data) {
     const cryptoStandard = require("./security/" + this.algorithm);
     const decryption = cryptoStandard.decrypt(data, this.key, this.iV);
 
@@ -28,7 +27,7 @@ class Prototype {
    * 
    * @returns string
    */
-  decrypt() {
+  decrypt(data) {
     const cryptoStandard = require("./security/" + this.algorithm);
     const encryption = cryptoStandard.encrypt(data, this.key, this.iV);
 
