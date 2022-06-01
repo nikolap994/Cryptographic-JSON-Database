@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "Simple and powerful tool that allows to encrypt and decrypt data in json database and save it to desired file.",
   "main": "helper/index.js",
-  "keywords": [],
-  "author": [
+  "keywords": [
     "security",
     "cryptography",
     "json"
   ],
+  "author": "Nikola Pavlović",
   "license": "MIT"
 }
