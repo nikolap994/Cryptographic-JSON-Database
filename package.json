@@ -1,18 +1,13 @@
 {
-  "name": "json-database",
+  "name": "cryptographic-json-database",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test/json": "nodemon test/json/index.js",
-    "test/aes": "nodemon test/security/aes.js",
-    "test/des": "nodemon test/security/des.js",
-    "test/triple-des": "nodemon test/security/triple-des.js"
-  },
+  "description": "Simple and powerful tool that allows to encrypt and decrypt data in json database and save it to desired file.",
+  "main": "helper/index.js",
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^2.0.16"
-  }
+  "author": [
+    "security",
+    "cryptography",
+    "json"
+  ],
+  "license": "MIT"
 }
