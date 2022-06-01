@@ -1,6 +1,6 @@
 # Cryptographic JSON Database
 
-Simple and powerfull tool that allows to encrypt and decrypt data in json database and save it to desired file.
+Simple and powerful tool that allows to encrypt and decrypt data in json database and save it to desired file.
 
 ![Logo](https://repository-images.githubusercontent.com/497405780/0aa0c8b3-bb2f-4d70-9bb2-4846d3829a53)
 
