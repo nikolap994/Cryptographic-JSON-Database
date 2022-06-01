@@ -1,6 +1,6 @@
 {
   "name": "cryptographic-json-database",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple and powerful tool that allows to encrypt and decrypt data in json database and save it to desired file.",
   "main": "helper/index.js",
   "keywords": [
