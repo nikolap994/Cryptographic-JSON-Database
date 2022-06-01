@@ -1,14 +1,15 @@
 # Cryptographic JSON Database
 
 Simple and powerful tool that allows to encrypt and decrypt data in json database and save it to desired file.
+Package is available on, to install it run `npm i cryptographic-json-database`.
 
 ![Logo](https://repository-images.githubusercontent.com/497405780/0aa0c8b3-bb2f-4d70-9bb2-4846d3829a53)
 
 ## How to use
 
 ```javascript
-const SecureJson = require("./helper/json");
-const DB = new SecureJson(
+const cryptographicJsonDatabase = require("cryptographic-json-database")
+const DB = new cryptographicJsonDatabase(
     "test.json", // file name 
     "utf-8", // encoding
     "aes", // algorithm used for encryption, other options are des and triple-des
